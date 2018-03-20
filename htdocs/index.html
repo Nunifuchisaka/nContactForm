@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>nContactForm</title>
+</head>
+<body>
+
+<form id="contact-form" action="./" method="post" class="ncf_1">
+  <table>
+    <tbody>
+      <tr>
+        <th>テキスト</th>
+        <td>
+          <div class="ncf_1__1">
+            <input type="text" name="text1" class="ncf_1__input" />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>ラジオボタン</th>
+        <td>
+          <div class="ncf_1__1">
+            <label><input type="radio" name="radio1" value="ラジオＡ" class="ncf_1__radio" />ラジオＡ</label>　
+            <label><input type="radio" name="radio1" value="ラジオＢ" class="ncf_1__radio" checked="checked" />ラジオＢ</label>
+          </div>
+        </td>
+      </tr>
+      <tr id="radio1-a" style="display: none">
+        <th>ラジオＡ</th>
+        <td>
+          ダミーテキストＡ
+        </td>
+      </tr>
+      <tr id="radio1-b" style="display: none">
+        <th>ラジオＢ</th>
+        <td>
+          ダミーテキストＢ
+        </td>
+      </tr>
+      <tr>
+        <th>チェックボックス</th>
+        <td>
+          <div class="ncf_1__1">
+            <label><input type="checkbox" name="checkbox1[]" value="チェックボックスＡ" class="ncf_1__checkbox" checked="checked" />Ａ</label>　
+            <label><input type="checkbox" name="checkbox1[]" value="チェックボックスＢ" class="ncf_1__checkbox" />Ｂ</label>
+          </div>
+        </td>
+      </tr>
+      <tr id="checkbox1-a" style="display: none">
+        <th>チェックボックスＡ</th>
+        <td>
+          チェックボックスＡ
+        </td>
+      </tr>
+      <tr id="checkbox1-b" style="display: none">
+        <th>チェックボックスＢ</th>
+        <td>
+          チェックボックスＢ
+        </td>
+      </tr>
+      <tr>
+        <th>セレクトボックス</th>
+        <td>
+          <div class="ncf_1__1">
+            <select name="select1" class="ncf_1__select">
+              <option value="セレクトＡ">セレクトＡ</option>
+              <option value="セレクトＢ">セレクトＢ</option>
+              <option value="セレクトＣ" selected="selected">セレクトＣ</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr id="select1-a" style="display: none">
+        <th>セレクトボックスＡ</th>
+        <td>
+          セレクトボックスＡ
+        </td>
+      </tr>
+      <tr id="select1-b" style="display: none">
+        <th>セレクトボックスＢ</th>
+        <td>
+          セレクトボックスＢ
+        </td>
+      </tr>
+      <tr id="select1-c" style="display: none">
+        <th>セレクトボックスＣ</th>
+        <td>
+          セレクトボックスＣ
+        </td>
+      </tr>
+      <tr>
+        <th>テキストエリア</th>
+        <td>
+          <div class="ncf_1__1">
+            <textarea name="textarea1" cols="30" rows="10" class="ncf_1__input"></textarea>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="hidden" name="success_page_url" value="thanks.html" />
+  <input type="hidden" name="error_page_url" value="error.html" />
+  <div class="ncf_1__confirm">
+    <button type="button">確認</button>
+  </div>
+  <div class="ncf_1__submit" style="display: none">
+    <button type="submit">送信</button>
+  </div>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
+<script src="nContactForm.js"></script>
+
+<script>
+$(function(){
+  
+  new nContactForm.View({
+    el: "#contact-form",
+    callback: {
+      change: {
+        select1: function( val ){
+          console.log("select1 change callback", val);
+          if( "セレクトＡ" == val ){
+            $("#select1-a").css("display", "table-row");
+            $("#select1-b").css("display", "none");
+            $("#select1-c").css("display", "none");
+          } else if( "セレクトＢ" == val ){
+            $("#select1-a").css("display", "none");
+            $("#select1-b").css("display", "table-row");
+            $("#select1-c").css("display", "none");
+          } else if( "セレクトＣ" == val ){
+            $("#select1-a").css("display", "none");
+            $("#select1-b").css("display", "none");
+            $("#select1-c").css("display", "table-row");
+          }
+        },
+        radio1: function( val ){
+          console.log("radio1 change callback", val);
+          if( "ラジオＡ" == val ){
+            $("#radio-a").css("display", "table-row");
+            $("#radio-b").css("display", "none");
+          } else if( "ラジオＢ" == val ){
+            $("#radio-a").css("display", "none");
+            $("#radio-b").css("display", "table-row");
+          }
+        },
+        checkbox1: function( val ){
+          console.log("checkbox1 change callback", val);
+          console.log( "チェックボックスＡ", nContactForm.match(val,"チェックボックスＡ") );
+          console.log( "チェックボックスＢ", nContactForm.match(val,"チェックボックスＢ") );
+          if( nContactForm.match(val,"チェックボックスＡ") ){
+            $("#checkbox-a").css("display", "table-row");
+            $("#checkbox-b").css("display", "none");
+          } else {
+            $("#checkbox-a").css("display", "none");
+          }
+          if( nContactForm.match(val,"チェックボックスＢ") ){
+            $("#checkbox-a").css("display", "none");
+            $("#checkbox-b").css("display", "table-row");
+          } else {
+            $("#checkbox-b").css("display", "none");
+          }
+        }
+      },
+      confirm: {
+        checkbox1: function( val ){
+          console.log("checkbox1 confirm callback", val);
+          if( "A" == val ){
+            
+          }
+        }
+      }
+    }
+  });
+  
+});
+</script>
+
+</body>
+</html>
